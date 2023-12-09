@@ -12,7 +12,9 @@ const PORT = process.env.PORT || 8000
 
 app.use(cors({
     origin: 'https://notepad-five-tau.vercel.app',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE'
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 200,
 }));
 
 app.use(express.json())
