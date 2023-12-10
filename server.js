@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 8000
 const customCorsMiddleware = (req, res, next) => {
     const frontendDomain = req.get('Origin');
 
-    if (frontendDomain.includes('https://notepad-five-tau.vercel.app')) {
+    if (frontendDomain && frontendDomain.includes('https://notepad-five-tau.vercel.app')) {
         res.header('Access-Control-Allow-Origin', frontendDomain);
         res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
         res.header('Access-Control-Allow-Credentials', true);
