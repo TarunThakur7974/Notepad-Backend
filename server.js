@@ -9,16 +9,12 @@ require('dotenv').config();
 connectToDatabase();
 
 const PORT = process.env.PORT || 8000
-app.use((req, res, next) => {
-    let ori = req.get('origin');
-    cors({
-        origin: ori.includes('https://notepad-five-tau.vercel.app') && "*",
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-        credentials: true,
-        optionsSuccessStatus: 200,
-    })
-    next();
-});
+app.use(cors({
+    origin: cors.origin && cors.origin.includes('https://notepad-five-tau.vercel.app') && "*",
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 200,
+}));
 app.options('*', cors());
 
 app.use(express.json())
