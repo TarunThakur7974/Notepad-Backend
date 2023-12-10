@@ -10,11 +10,14 @@ connectToDatabase();
 
 const PORT = process.env.PORT || 8000
 app.use(cors({
-    origin: cors.origin && cors.origin.includes('https://notepad-five-tau.vercel.app') && "*",
+    origin: 'https://notepad-five-tau.vercel.app/' || "https://notepad-five-tau.vercel.app/**",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 200,
 }));
+if(cors.origin){
+    console.log(cors.origin)
+}
 app.options('*', cors());
 
 app.use(express.json())
