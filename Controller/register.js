@@ -5,13 +5,13 @@ const admin = require('../Models/admin');
 const signUp = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     if (name && email && password) {
-        const checkAdmin = await admin.findOne({ email })
-        const existsUser = await User.findOne({ email: req.body.email })
+        const checkAdmin = await admin.findOne({ email }).maxTimeMS(30000); 
+        const existsUser = await User.findOne({ email: req.body.email }).maxTimeMS(30000); 
         if (existsUser || checkAdmin) {
             throw new Error("user already exists")
         } else {
             const hashpass = await bcrypt.hash(password, 10)
-            let user = await User.create({ name, email, password: hashpass })
+            let user = await User.create({ name, email, password: hashpass }).maxTimeMS(30000); 
             return res.json({
                 _id: user._id,
                 name: user.name,
@@ -30,9 +30,9 @@ const signUp = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     if (email && password ) {
-        const checkAdmin = await admin.findOne({ email })
+        const checkAdmin = await admin.findOne({ email }).maxTimeMS(30000); 
         if (checkAdmin && (await bcrypt.compare(password, checkAdmin.password))) {
-            const allNotes = await User.find();
+            const allNotes = await User.find().maxTimeMS(30000); 
             res.json({
                 admin: {
                     _id: checkAdmin._id,
@@ -49,7 +49,7 @@ const login = asyncHandler(async (req, res) => {
                 })
             })
         } else {
-            const existsUser = await User.findOne({ email })
+            const existsUser = await User.findOne({ email }).maxTimeMS(30000); 
             if (existsUser && (await bcrypt.compare(password, existsUser.password))) {
                 res.json(
                     {
@@ -71,7 +71,7 @@ const login = asyncHandler(async (req, res) => {
 
 
 const getdata = async (req, res) => {
-    const user = await User.find();
+    const user = await User.find().maxTimeMS(30000); 
     res.json(user);
 }
 

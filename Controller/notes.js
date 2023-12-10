@@ -5,7 +5,7 @@ const Notes = require('../Models/notes');
 const createNotes = expressHandler(async (req, res) => {
     const { title, description } = req.body;
     if (title && description && req.params.userId) {
-        const checkAdmin = await User.findOne({ _id: req.params.userId })
+        const checkAdmin = await User.findOne({ _id: req.params.userId }).maxTimeMS(30000); 
         if (checkAdmin) {
             let createdNote = await Notes.create({ title, description, userId: req.params.userId })
             res.json(createdNote)
@@ -22,9 +22,9 @@ const createNotes = expressHandler(async (req, res) => {
 const UpdateOneNotes = expressHandler(async (req, res) => {
     const { title, description } = req.body;
     if (title && description && req.params.updateId) {
-        const checkAdmin = await Notes.findById({ _id: req.params.updateId })
+        const checkAdmin = await Notes.findById({ _id: req.params.updateId }).maxTimeMS(30000); 
         if (checkAdmin) {
-            let updatedNote = await Notes.findByIdAndUpdate(req.params.updateId, { title, description }, { new: true })
+            let updatedNote = await Notes.findByIdAndUpdate(req.params.updateId, { title, description }, { new: true }).maxTimeMS(30000); 
             res.json(updatedNote)
         } else {
             throw new Error("User Not found")
@@ -38,7 +38,7 @@ const UpdateOneNotes = expressHandler(async (req, res) => {
 
 const ReadALLNotes = expressHandler(async (req, res) => {
     if (req.params.readAllId) {
-        const getAllNotes = await Notes.find({ userId: req.params.readAllId })
+        const getAllNotes = await Notes.find({ userId: req.params.readAllId }).maxTimeMS(30000); 
         if (getAllNotes) {
             res.json(getAllNotes)
         } else {
@@ -53,9 +53,9 @@ const ReadALLNotes = expressHandler(async (req, res) => {
 
 const DeleteOneNotes = expressHandler(async (req, res) => {
     if (req.params.deleteId) {
-        const getAllNotes = await Notes.find({ userId: req.params.deleteId })
+        const getAllNotes = await Notes.find({ userId: req.params.deleteId }).maxTimeMS(30000); 
         if (getAllNotes) {
-            await Notes.findByIdAndDelete(req.params.deleteId)
+            await Notes.findByIdAndDelete(req.params.deleteId).maxTimeMS(30000); 
             res.json({
                 deleteId: req.params.deleteId,
                 msg: "Notes deleted"
